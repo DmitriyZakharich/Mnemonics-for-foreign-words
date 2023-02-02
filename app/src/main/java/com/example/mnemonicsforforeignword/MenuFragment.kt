@@ -1,0 +1,33 @@
+package com.example.mnemonicsforforeignword
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment
+import com.example.mnemonicsforforeignword.databinding.FragmentMenuBinding
+
+class MenuFragment : Fragment() {
+
+    private var _binding: FragmentMenuBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?): View? {
+        _binding = FragmentMenuBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val navController = NavHostFragment.findNavController(this)
+        binding.exercisesButton.setOnClickListener { navController.navigate(R.id.exercisesMenuFragment) }
+        binding.linksButton.setOnClickListener { navController.navigate(R.id.linksFragment) }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) = MenuFragment().apply {}
+    }
+}

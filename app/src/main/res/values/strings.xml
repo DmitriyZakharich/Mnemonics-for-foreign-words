@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Mnemonics for foreign word</string>
+    <string name="quick_start">Быстрый старт</string>
+    <string name="tutorial">Теория</string>
+    <string name="exercises">Упражнения</string>
+    <string name="statistics">Статистика</string>
+    <string name="links">Ссылки</string>
+    <string name="faq">FAQ</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

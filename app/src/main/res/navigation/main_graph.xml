@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/menuFragment">
+
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.mnemonicsforforeignword.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_linksFragment"
+            app:destination="@id/linksFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_exercisesFragment"
+            app:destination="@id/exercisesMenuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/linksFragment"
+        android:name="com.example.mnemonicsforforeignword.screens.links.LinksFragment"
+        android:label="fragment_links"
+        tools:layout="@layout/fragment_links" />
+    <fragment
+        android:id="@+id/exercisesMenuFragment"
+        android:name="com.example.mnemonicsforforeignword.screens.exercises.ExercisesMenuFragment"
+        android:label="fragment_menu_exercises"
+        tools:layout="@layout/fragment_menu_exercises" >
+        <action
+            android:id="@+id/action_exercisesMenuFragment_to_visualizationFragment"
+            app:destination="@id/visualizationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/visualizationFragment"
+        android:name="com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.view.VisualizationFragment"
+        android:label="fragment_visualization"
+        tools:layout="@layout/fragment_visualization" />
+</navigation>
