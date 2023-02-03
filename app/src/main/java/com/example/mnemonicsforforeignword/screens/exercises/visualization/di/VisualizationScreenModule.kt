@@ -1,18 +1,17 @@
 package com.example.mnemonicsforforeignword.screens.exercises.visualization.di
 
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.repository.RepositoryManagerImpl
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.repository.VisualizationRepositoryManager
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.viewmodel.VisualizationViewModelFactory
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.interfases.RepositoryManager
 import dagger.Module
 import dagger.Provides
 
 @Module
 class VisualizationScreenModule {
     @Provides
-    fun provideRepositoryManager(): RepositoryManager =
-        RepositoryManagerImpl()
+    fun provideRepositoryManager(): VisualizationRepositoryManager =
+        VisualizationRepositoryManager()
 
     @Provides
-    fun provideListViewModelFactory(repositoryManager: RepositoryManager): VisualizationViewModelFactory =
+    fun provideVisualizationViewModelFactory(repositoryManager: VisualizationRepositoryManager): VisualizationViewModelFactory =
         VisualizationViewModelFactory(repositoryManager)
 }

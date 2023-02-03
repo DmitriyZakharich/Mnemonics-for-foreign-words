@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_exercisesMenuFragment_to_visualizationFragment"
             app:destination="@id/visualizationFragment" />
+        <action
+            android:id="@+id/action_exercisesMenuFragment_to_connectionFragment"
+            app:destination="@id/connectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/visualizationFragment"
@@ -45,4 +48,9 @@
         android:name="com.example.mnemonicsforforeignword.screens.tutorial.TutorialMenuFragment"
         android:label="fragment_tutorial_menu"
         tools:layout="@layout/fragment_tutorial_menu" />
+    <fragment
+        android:id="@+id/connectionFragment"
+        android:name="com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.view.ConnectionFragment"
+        android:label="fragment_connection"
+        tools:layout="@layout/fragment_connection" />
 </navigation>

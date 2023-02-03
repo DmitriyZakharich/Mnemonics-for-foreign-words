@@ -1,24 +1,23 @@
 package com.example.mnemonicsforforeignword.screens.exercises.visualization.repository
 
 import com.example.mnemonicsforforeignword.MyApp
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.interfases.RepositoryManager
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.DataType
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.VisualizationDataType
 import java.lang.Integer.min
 
-class RepositoryManagerImpl : RepositoryManager {
+class VisualizationRepositoryManager {
 
     private enum class Genders {
         MALE, NEUTER, FEMALE, PLURAL
     }
 
-    override suspend fun getListData(dataType: DataType): List<String> {
+    suspend fun getListData(dataType: VisualizationDataType): List<String> {
         return when (dataType) {
-            DataType.FIGURATIVE_NOUNS -> getFigurativeNouns()
-            DataType.ABSTRACT_NOUNS -> getData("abstract_nouns.txt")
-            DataType.ADJECTIVE -> getAdjectives()
-            DataType.VERB -> getData("verbs.txt")
-            DataType.ALL_TYPES -> getData("figurative_nouns.txt", "abstract_nouns.txt", "adjectives.txt", "verbs.txt")
-            DataType.ADJECTIVE_AND_NOUN -> getDataFromPair("adjectives.txt", "figurative_nouns.txt")
+            VisualizationDataType.FIGURATIVE_NOUNS -> getFigurativeNouns()
+            VisualizationDataType.ABSTRACT_NOUNS -> getData("abstract_nouns.txt")
+            VisualizationDataType.ADJECTIVE -> getAdjectives()
+            VisualizationDataType.VERB -> getData("verbs.txt")
+            VisualizationDataType.ALL_TYPES -> getData("figurative_nouns.txt", "abstract_nouns.txt", "adjectives.txt", "verbs.txt")
+            VisualizationDataType.ADJECTIVE_AND_NOUN -> getDataFromPair("adjectives.txt", "figurative_nouns.txt")
         }
     }
 
@@ -49,7 +48,7 @@ class RepositoryManagerImpl : RepositoryManager {
     private fun getAdjectiveGender(gender: Genders, adjective: String): String =
         adjective.split('|')[gender.ordinal]
 
-    private suspend fun getData(vararg files: String): List<String> {
+    private fun getData(vararg files: String): List<String> {
         val resultList = mutableListOf<String>()
         files.forEach {
             resultList.addAll(

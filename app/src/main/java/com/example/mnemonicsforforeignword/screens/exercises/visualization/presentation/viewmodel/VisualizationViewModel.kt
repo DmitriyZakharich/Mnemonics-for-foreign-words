@@ -4,27 +4,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.interfases.RepositoryManager
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.DataType
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.WordIntent
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.viewstate.WordState
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.VisualizationDataType
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.VisualizationWordIntent
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.viewstate.VisualizationWordState
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.repository.VisualizationRepositoryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VisualizationViewModel(private val repositoryManager: RepositoryManager) : ViewModel() {
+class VisualizationViewModel(private val repositoryManager: VisualizationRepositoryManager) : ViewModel() {
 
-    private var count = -1
     private val list = mutableListOf<String>()
 
-    private var _state = MutableLiveData<WordState>()
-    val state: LiveData<WordState> = _state
+    private var _state = MutableLiveData<VisualizationWordState>()
+    val state: LiveData<VisualizationWordState> = _state
 
-    fun handleIntent(intent: WordIntent) {
+    fun handleIntent(intent: VisualizationWordIntent) {
         when (intent) {
-            is WordIntent.LoadingNewWords -> getNewWords(intent.dataType)
-            is WordIntent.NextWord -> {
+            is VisualizationWordIntent.LoadingNewWords -> getNewWords(intent.dataType)
+            is VisualizationWordIntent.NextWord -> {
                 _state.postValue(
-                    WordState.Word(list.random())
+                    VisualizationWordState.Couples(list.random())
 
                     /**Переписать*/
 //                    if (list.size >= 1 && count < list.size - 1) WordState.Word(list[++count])
@@ -34,21 +33,23 @@ class VisualizationViewModel(private val repositoryManager: RepositoryManager) :
         }
     }
 
-    private fun getNewWords(intent: DataType){
+
+
+    private fun getNewWords(intent: VisualizationDataType){
         viewModelScope.launch(Dispatchers.IO){
-            _state.postValue(WordState.Loading)
+            _state.postValue(VisualizationWordState.Loading)
 
             _state.postValue(try {
                 list.clear()
                 list.addAll ((repositoryManager.getListData(intent)))
 
                 if (list.isNotEmpty()) {
-                    WordState.Word( list.random() )
+                    VisualizationWordState.Couples( list.random() )
                 } else {
-                    WordState.Idle
+                    VisualizationWordState.Idle
                 }
             } catch (e: Exception) {
-                WordState.Error(e.localizedMessage)
+                VisualizationWordState.Error(e.localizedMessage)
             })
         }
     }

@@ -15,7 +15,7 @@ class ExercisesMenuFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? { // Inflate the layout for this fragment
+            savedInstanceState: Bundle?): View? {
         _binding = FragmentMenuExercisesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -24,10 +24,11 @@ class ExercisesMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val navController = NavHostFragment.findNavController(this)
         binding.visualizationButton.setOnClickListener { navController.navigate(R.id.visualizationFragment) }
+        binding.connectionButton.setOnClickListener { navController.navigate(R.id.connectionFragment) }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) = ExercisesMenuFragment().apply {}
+        fun newInstance() = ExercisesMenuFragment().apply {}
     }
 }

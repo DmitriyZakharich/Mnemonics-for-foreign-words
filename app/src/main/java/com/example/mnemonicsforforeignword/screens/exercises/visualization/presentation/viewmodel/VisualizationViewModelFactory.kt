@@ -2,9 +2,9 @@ package com.example.mnemonicsforforeignword.screens.exercises.visualization.pres
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.interfases.RepositoryManager
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.repository.VisualizationRepositoryManager
 
-class VisualizationViewModelFactory (private val repositoryManager: RepositoryManager):
+class VisualizationViewModelFactory (private val repositoryManager: VisualizationRepositoryManager):
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
