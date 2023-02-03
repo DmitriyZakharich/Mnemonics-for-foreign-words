@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_menuFragment_to_exercisesFragment"
             app:destination="@id/exercisesMenuFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_tutorialMenuFragment"
+            app:destination="@id/tutorialMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/linksFragment"
@@ -37,4 +40,9 @@
         android:name="com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.view.VisualizationFragment"
         android:label="fragment_visualization"
         tools:layout="@layout/fragment_visualization" />
+    <fragment
+        android:id="@+id/tutorialMenuFragment"
+        android:name="com.example.mnemonicsforforeignword.screens.tutorial.TutorialMenuFragment"
+        android:label="fragment_tutorial_menu"
+        tools:layout="@layout/fragment_tutorial_menu" />
 </navigation>

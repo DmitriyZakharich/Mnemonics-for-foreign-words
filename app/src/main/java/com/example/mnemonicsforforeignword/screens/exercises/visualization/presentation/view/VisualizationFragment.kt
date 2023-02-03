@@ -10,11 +10,14 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.example.mnemonicsforforeignword.MyApp
 import com.example.mnemonicsforforeignword.databinding.FragmentVisualizationBinding
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.DataIntent
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.DataType
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.WordIntent
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.viewmodel.VisualizationViewModel
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.viewmodel.VisualizationViewModelFactory
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.viewstate.WordState
 import javax.inject.Inject
 
 class VisualizationFragment : Fragment() {
@@ -31,7 +34,7 @@ class VisualizationFragment : Fragment() {
             "Глаголы", "Прилагательные + существительные", "Все типы")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?): View? { // Inflate the layout for this fragment
+            savedInstanceState: Bundle?): View? {
         _binding = FragmentVisualizationBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -40,35 +43,66 @@ class VisualizationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViewModel()
         setupSpinner()
+        binding.nextWordButton.setOnClickListener {
+            viewModel.handleIntent(WordIntent.NextWord)
+        }
+
+        val navController = NavHostFragment.findNavController(this)
+        binding.exitButton.setOnClickListener { navController.navigate(
+            com.example.mnemonicsforforeignword.R.id.exercisesMenuFragment) }
+
+        binding.hintButton.setOnClickListener {
+            val dialog = VisualizationDialogFragment()
+            dialog.show(childFragmentManager, "custom")
+        }
     }
 
     private fun setupViewModel() {
         (requireContext().applicationContext as MyApp).visualizationScreenComponent.inject(this)
         viewModel = ViewModelProvider(this, vmFactory)[VisualizationViewModel::class.java]
 
-        viewModel.words.observe(viewLifecycleOwner) {
-            Toast.makeText(MyApp.applicationContext(), it.joinToString(), Toast.LENGTH_SHORT).show()
+        viewModel.state.observe(viewLifecycleOwner){
+            when (it) {
+                is WordState.Idle -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(this.activity, "Ошибка. Нет данных", Toast.LENGTH_LONG).show()
+                }
+                is WordState.Loading -> {
+                    binding.wordTextView.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.wordTextView.text = ""
+                }
+
+                is WordState.Word -> {
+                    binding.progressBar.visibility = View.GONE
+
+                    binding.wordTextView.visibility = View.VISIBLE
+                    binding.wordTextView.text = it.nextWord
+                }
+                is WordState.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(this.activity, it.error, Toast.LENGTH_LONG).show()
+                }
+            }
         }
 
-//        viewModel.getWords(DataIntent.FIGURATIVE_NOUNS)
     }
 
     private fun setupSpinner() {
         val adapter = ArrayAdapter(requireActivity(), R.layout.simple_spinner_item, dataType)
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
 
-//        Toast.makeText(requireActivity(), "setupSpinner", Toast.LENGTH_SHORT).show()
 
         binding.dataTypeSpinner.adapter = adapter
 
         binding.dataTypeSpinner.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                viewModel.getWords(DataIntent.values()[position])
+                viewModel.handleIntent(WordIntent.LoadingNewWords(DataType.values()[position]))
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                viewModel.getWords(DataIntent.FIGURATIVE_NOUNS)
+                viewModel.handleIntent(WordIntent.LoadingNewWords(DataType.FIGURATIVE_NOUNS))
             }
         }
     }

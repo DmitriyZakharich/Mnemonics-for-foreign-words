@@ -2,7 +2,7 @@ package com.example.mnemonicsforforeignword.screens.exercises.visualization.repo
 
 import com.example.mnemonicsforforeignword.MyApp
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.interfases.RepositoryManager
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.DataIntent
+import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.DataType
 import java.lang.Integer.min
 
 class RepositoryManagerImpl : RepositoryManager {
@@ -11,14 +11,14 @@ class RepositoryManagerImpl : RepositoryManager {
         MALE, NEUTER, FEMALE, PLURAL
     }
 
-    override suspend fun getListData(dataIntent: DataIntent): List<String> {
-        return when (dataIntent) {
-            DataIntent.FIGURATIVE_NOUNS -> getFigurativeNouns()
-            DataIntent.ABSTRACT_NOUNS -> getData("abstract_nouns.txt")
-            DataIntent.ADJECTIVE -> getAdjectives()
-            DataIntent.VERB -> getData("verbs.txt")
-            DataIntent.ALL_TYPES -> getData("figurative_nouns.txt", "abstract_nouns.txt", "adjectives.txt", "verbs.txt")
-            DataIntent.ADJECTIVE_AND_NOUN -> getDataFromPair("adjectives.txt", "figurative_nouns.txt")
+    override suspend fun getListData(dataType: DataType): List<String> {
+        return when (dataType) {
+            DataType.FIGURATIVE_NOUNS -> getFigurativeNouns()
+            DataType.ABSTRACT_NOUNS -> getData("abstract_nouns.txt")
+            DataType.ADJECTIVE -> getAdjectives()
+            DataType.VERB -> getData("verbs.txt")
+            DataType.ALL_TYPES -> getData("figurative_nouns.txt", "abstract_nouns.txt", "adjectives.txt", "verbs.txt")
+            DataType.ADJECTIVE_AND_NOUN -> getDataFromPair("adjectives.txt", "figurative_nouns.txt")
         }
     }
 
@@ -49,7 +49,7 @@ class RepositoryManagerImpl : RepositoryManager {
     private fun getAdjectiveGender(gender: Genders, adjective: String): String =
         adjective.split('|')[gender.ordinal]
 
-    private fun getData(vararg files: String): List<String> {
+    private suspend fun getData(vararg files: String): List<String> {
         val resultList = mutableListOf<String>()
         files.forEach {
             resultList.addAll(
