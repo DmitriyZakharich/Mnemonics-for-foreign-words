@@ -27,11 +27,6 @@ class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryMan
                 _state.postValue(
                     ConnectionCoupleState.Couples(Pair(randomKey, value!!))
 
-
-//                    couples[couples.keys.random()]?.let {
-//                    ConnectionCoupleState.Couples(it)
-//                }
-
                     /**Переписать*/
                     //                    if (list.size >= 1 && count < list.size - 1) WordState.Word(list[++count])
                     //                    else WordState.Idle //хрень
@@ -60,6 +55,4 @@ class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryMan
             })
         }
     }
-
-
 }
