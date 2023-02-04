@@ -10,6 +10,8 @@ import com.example.mnemonicsforforeignword.screens.exercises.connection.presenta
 import com.example.mnemonicsforforeignword.screens.exercises.connection.repository.ConnectionRepositoryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.StrictMath.random
+import kotlin.random.Random
 
 class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryManager) : ViewModel() {
 
@@ -22,10 +24,8 @@ class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryMan
         when (intent) {
             is ConnectionCoupleIntent.LoadingNewCouples -> getNewCouples(intent.dataType)
             is ConnectionCoupleIntent.NextCouple -> {
-                val randomKey = couples.keys.random()
-                val value = couples[randomKey]
                 _state.postValue(
-                    ConnectionCoupleState.Couples(Pair(randomKey, value!!))
+                    ConnectionCoupleState.Couples(couples.entries.elementAt(Random.nextInt(couples.size)).toPair())
 
                     /**Переписать*/
                     //                    if (list.size >= 1 && count < list.size - 1) WordState.Word(list[++count])
@@ -44,9 +44,7 @@ class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryMan
                 couples.putAll ((repositoryManager.getMapData(intent)))
 
                 if (couples.isNotEmpty()) {
-                    val randomKey = couples.keys.random()
-                    val value = couples[randomKey]
-                    ConnectionCoupleState.Couples(Pair(randomKey, value!!))
+                    ConnectionCoupleState.Couples(couples.entries.elementAt(Random.nextInt(couples.size)).toPair())
                 } else {
                     ConnectionCoupleState.Idle
                 }

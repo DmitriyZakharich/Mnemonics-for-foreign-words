@@ -63,7 +63,7 @@ class ConnectionFragment : Fragment() {
                     binding.progressBar2.visibility = View.GONE
 
                     binding.coupleTextView.visibility = View.VISIBLE
-                    binding.coupleTextView.text = it.nextCouple.first + " " + it.nextCouple.second
+                    binding.coupleTextView.text = it.nextCouple.first + " - " + it.nextCouple.second
                 }
                 is ConnectionCoupleState.Error -> {
                     binding.progressBar2.visibility = View.GONE
