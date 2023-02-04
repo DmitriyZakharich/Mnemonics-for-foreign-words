@@ -1,7 +1,7 @@
-package com.example.mnemonicsforforeignword.screens.exercises.connection.di
+package com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.di
 
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.viewmodel.ConnectionViewModelFactory
-import com.example.mnemonicsforforeignword.screens.exercises.connection.repository.ConnectionRepositoryManager
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewmodel.ConnectionViewModelFactory
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.repository.ConnectionRepositoryManager
 import dagger.Module
 import dagger.Provides
 

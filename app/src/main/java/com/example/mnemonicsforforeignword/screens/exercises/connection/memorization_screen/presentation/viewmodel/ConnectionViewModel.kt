@@ -1,13 +1,13 @@
-package com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.viewmodel
+package com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.intent.ConnectionCoupleIntent
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.intent.ConnectionDataType
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.viewstate.ConnectionCoupleState
-import com.example.mnemonicsforforeignword.screens.exercises.connection.repository.ConnectionRepositoryManager
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent.ConnectionCoupleIntent
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent.ConnectionDataType
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewstate.ConnectionCoupleState
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.repository.ConnectionRepositoryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.StrictMath.random
@@ -16,6 +16,8 @@ import kotlin.random.Random
 class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryManager) : ViewModel() {
 
     private val couples = mutableMapOf<String, String>()
+    fun getCouples() : Map<String, String> = couples
+
 
     private var _state = MutableLiveData<ConnectionCoupleState>()
     val state: LiveData<ConnectionCoupleState> = _state

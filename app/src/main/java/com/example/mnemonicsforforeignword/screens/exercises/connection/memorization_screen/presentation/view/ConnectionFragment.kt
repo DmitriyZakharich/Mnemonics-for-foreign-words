@@ -1,6 +1,7 @@
-package com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.view
+package com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +10,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.example.mnemonicsforforeignword.MyApp
+import com.example.mnemonicsforforeignword.R
 import com.example.mnemonicsforforeignword.databinding.FragmentConnectionBinding
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.intent.ConnectionCoupleIntent
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.intent.ConnectionDataType
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.viewmodel.ConnectionViewModel
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.viewmodel.ConnectionViewModelFactory
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.viewstate.ConnectionCoupleState
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent.ConnectionCoupleIntent
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent.ConnectionDataType
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewmodel.ConnectionViewModel
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewmodel.ConnectionViewModelFactory
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewstate.ConnectionCoupleState
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.VisualizationWordIntent
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.view.VisualizationDialogFragment
 import javax.inject.Inject
@@ -99,6 +102,14 @@ class ConnectionFragment : Fragment() {
     private fun setupButtons() {
         binding.nextCoupleButton.setOnClickListener {
             viewModel.handleIntent(ConnectionCoupleIntent.NextCouple)
+        }
+
+        binding.toCheckButton.setOnClickListener {
+            val bundle = Bundle()
+            val m: HashMap<String, String> = viewModel.getCouples() as HashMap<String, String>
+            bundle.putSerializable("couples", m )
+            val navController = NavHostFragment.findNavController(this)
+            navController.navigate(R.id.checkFragment, bundle)
         }
 
 //        val navController = NavHostFragment.findNavController(this)

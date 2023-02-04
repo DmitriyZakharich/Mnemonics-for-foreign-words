@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.mnemonicsforforeignword.MyApp
 import com.example.mnemonicsforforeignword.databinding.FragmentVisualizationBinding
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.intent.ConnectionDataType
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent.ConnectionDataType
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.VisualizationDataType
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.VisualizationWordIntent
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.viewmodel.VisualizationViewModel

@@ -1,7 +1,7 @@
-package com.example.mnemonicsforforeignword.screens.exercises.connection.repository
+package com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.repository
 
 import com.example.mnemonicsforforeignword.MyApp
-import com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.intent.ConnectionDataType
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent.ConnectionDataType
 
 class ConnectionRepositoryManager {
 

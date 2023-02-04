@@ -1,4 +1,4 @@
-package com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.viewstate
+package com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewstate
 
 sealed class ConnectionCoupleState {
     object Idle : ConnectionCoupleState()

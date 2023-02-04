@@ -1,4 +1,4 @@
-package com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.intent
+package com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent
 
 sealed class ConnectionCoupleIntent{
     data class LoadingNewCouples(val dataType: ConnectionDataType) : ConnectionCoupleIntent()

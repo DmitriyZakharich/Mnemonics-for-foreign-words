@@ -50,7 +50,16 @@
         tools:layout="@layout/fragment_tutorial_menu" />
     <fragment
         android:id="@+id/connectionFragment"
-        android:name="com.example.mnemonicsforforeignword.screens.exercises.connection.presentation.view.ConnectionFragment"
+        android:name="com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.view.ConnectionFragment"
         android:label="fragment_connection"
-        tools:layout="@layout/fragment_connection" />
+        tools:layout="@layout/fragment_connection" >
+        <action
+            android:id="@+id/action_connectionFragment_to_checkFragment"
+            app:destination="@id/checkFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkFragment"
+        android:name="com.example.mnemonicsforforeignword.screens.exercises.connection.check_screen.presentation.view.CheckFragment"
+        android:label="fragment_check"
+        tools:layout="@layout/fragment_check" />
 </navigation>

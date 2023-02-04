@@ -2,8 +2,8 @@ package com.example.mnemonicsforforeignword
 
 import android.app.Application
 import android.content.Context
-import com.example.mnemonicsforforeignword.screens.exercises.connection.di.ConnectionScreenComponent
-import com.example.mnemonicsforforeignword.screens.exercises.connection.di.DaggerConnectionScreenComponent
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.di.ConnectionScreenComponent
+import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.di.DaggerConnectionScreenComponent
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.di.DaggerVisualizationScreenComponent
 import com.example.mnemonicsforforeignword.screens.exercises.visualization.di.VisualizationScreenComponent
 
