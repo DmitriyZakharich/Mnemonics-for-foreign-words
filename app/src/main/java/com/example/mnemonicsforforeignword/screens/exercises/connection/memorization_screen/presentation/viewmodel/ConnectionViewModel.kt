@@ -4,20 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mnemonicsforforeignword.CouplesList
 import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent.ConnectionCoupleIntent
 import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.intent.ConnectionDataType
 import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewstate.ConnectionCoupleState
 import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.repository.ConnectionRepositoryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.StrictMath.random
-import kotlin.random.Random
 
 class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryManager) : ViewModel() {
 
-    private val couples = mutableMapOf<String, String>()
-    fun getCouples() : Map<String, String> = couples
+    private val couples = mutableListOf<Pair<String, String>>()
+    fun getCouples() : CouplesList = couples
 
+    private var count = 0
 
     private var _state = MutableLiveData<ConnectionCoupleState>()
     val state: LiveData<ConnectionCoupleState> = _state
@@ -27,11 +27,11 @@ class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryMan
             is ConnectionCoupleIntent.LoadingNewCouples -> getNewCouples(intent.dataType)
             is ConnectionCoupleIntent.NextCouple -> {
                 _state.postValue(
-                    ConnectionCoupleState.Couples(couples.entries.elementAt(Random.nextInt(couples.size)).toPair())
-
-                    /**Переписать*/
-                    //                    if (list.size >= 1 && count < list.size - 1) WordState.Word(list[++count])
-                    //                    else WordState.Idle //хрень
+                    if (++count < couples.size) {
+                        ConnectionCoupleState.Couples(couples[count]) //result
+                    } else {
+                        ConnectionCoupleState.Finish
+                    }
                 )
             }
         }
@@ -43,10 +43,11 @@ class ConnectionViewModel(private val repositoryManager: ConnectionRepositoryMan
 
             _state.postValue(try {
                 couples.clear()
-                couples.putAll ((repositoryManager.getMapData(intent)))
+                couples.addAll ((repositoryManager.getData(intent)))
 
                 if (couples.isNotEmpty()) {
-                    ConnectionCoupleState.Couples(couples.entries.elementAt(Random.nextInt(couples.size)).toPair())
+                    count = 0
+                    ConnectionCoupleState.Couples(couples.first())
                 } else {
                     ConnectionCoupleState.Idle
                 }

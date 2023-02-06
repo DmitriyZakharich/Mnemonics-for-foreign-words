@@ -1,17 +1,17 @@
 package com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.view
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import com.example.mnemonicsforforeignword.CouplesList
 import com.example.mnemonicsforforeignword.MyApp
 import com.example.mnemonicsforforeignword.R
 import com.example.mnemonicsforforeignword.databinding.FragmentConnectionBinding
@@ -20,11 +20,16 @@ import com.example.mnemonicsforforeignword.screens.exercises.connection.memoriza
 import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewmodel.ConnectionViewModel
 import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewmodel.ConnectionViewModelFactory
 import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewstate.ConnectionCoupleState
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.intent.VisualizationWordIntent
-import com.example.mnemonicsforforeignword.screens.exercises.visualization.presentation.view.VisualizationDialogFragment
 import javax.inject.Inject
 
+
 class ConnectionFragment : Fragment() {
+
+    internal interface OnFragmentSendDataListener {
+        fun onSendData(data: CouplesList?)
+    }
+
+    private lateinit var fragmentSendDataListener: OnFragmentSendDataListener
 
     private var _binding: FragmentConnectionBinding? = null
     private val binding get() = _binding!!
@@ -32,6 +37,15 @@ class ConnectionFragment : Fragment() {
     @Inject
     lateinit var vmFactory: ConnectionViewModelFactory
     private lateinit var viewModel: ConnectionViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            fragmentSendDataListener = context as OnFragmentSendDataListener
+        } catch (e: ClassCastException) {
+            throw ClassCastException("$context должен реализовывать интерфейс OnFragmentInteractionListener")
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
@@ -67,6 +81,9 @@ class ConnectionFragment : Fragment() {
 
                     binding.coupleTextView.visibility = View.VISIBLE
                     binding.coupleTextView.text = it.nextCouple.first + " - " + it.nextCouple.second
+                }
+                is ConnectionCoupleState.Finish -> {
+                    Toast.makeText(this.activity, "Финиш", Toast.LENGTH_LONG).show()
                 }
                 is ConnectionCoupleState.Error -> {
                     binding.progressBar2.visibility = View.GONE
@@ -105,11 +122,13 @@ class ConnectionFragment : Fragment() {
         }
 
         binding.toCheckButton.setOnClickListener {
-            val bundle = Bundle()
-            val m: HashMap<String, String> = viewModel.getCouples() as HashMap<String, String>
-            bundle.putSerializable("couples", m )
+
+            fragmentSendDataListener.onSendData(viewModel.getCouples())
             val navController = NavHostFragment.findNavController(this)
-            navController.navigate(R.id.checkFragment, bundle)
+            navController.navigate(R.id.checkFragment)
+
+//            val navController = NavHostFragment.findNavController(this)
+//            navController.navigate(R.id.checkFragment, bundle)
         }
 
 //        val navController = NavHostFragment.findNavController(this)

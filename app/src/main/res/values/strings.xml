@@ -6,7 +6,6 @@
     <string name="statistics">Статистика</string>
     <string name="links">Ссылки</string>
     <string name="faq">FAQ</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="next_word">Следующее\n слово</string>
     <string name="word">Слово</string>
@@ -14,4 +13,6 @@
     <string name="exit">Выход</string>
     <string name="next_couple">Следующая парочка</string>
     <string name="connection_fragment">Connection fragment</string>
+    <string name="checkfragment">CheckFragment</string>
+    <string name="check_yourself">Проверить себя</string>
 </resources>

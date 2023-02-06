@@ -29,5 +29,5 @@ class MyApp: Application() {
         visualizationScreenComponent = DaggerVisualizationScreenComponent.builder().build()
         connectionScreenComponent = DaggerConnectionScreenComponent.builder().build()
     }
-
 }
+typealias CouplesList = List<Pair<String, String>>

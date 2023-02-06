@@ -1,32 +1,29 @@
 package com.example.mnemonicsforforeignword.screens.exercises.connection.check_screen.presentation.view
 
-import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import com.example.mnemonicsforforeignword.MyApp
-import com.example.mnemonicsforforeignword.R
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.mnemonicsforforeignword.CouplesList
 import com.example.mnemonicsforforeignword.databinding.FragmentCheckBinding
-import com.example.mnemonicsforforeignword.databinding.FragmentConnectionBinding
 import com.example.mnemonicsforforeignword.screens.exercises.connection.check_screen.presentation.viewmodel.CheckViewModel
-import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewmodel.ConnectionViewModel
-import com.example.mnemonicsforforeignword.screens.exercises.connection.memorization_screen.presentation.viewmodel.ConnectionViewModelFactory
-import javax.inject.Inject
+import com.example.mnemonicsforforeignword.screens.exercises.connection.check_screen.presentation.viewmodel.CheckViewModelFactory
+import com.example.mnemonicsforforeignword.screens.exercises.connection.check_screen.presentation.viewstate.CheckCoupleState
+
 
 class CheckFragment : Fragment() {
 
+    internal interface OnFragmentGetDataListener {
+        fun onGetData(): CouplesList?
+    }
+
+    private lateinit var viewModel: CheckViewModel
+
     private var _binding: FragmentCheckBinding? = null
     private val binding get() = _binding!!
-
-
-//    @Inject
-//    lateinit var vmFactory: CheckViewModelFactory
-    private lateinit var viewModel: CheckViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?): View? {
@@ -34,19 +31,44 @@ class CheckFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewModel()
-        val couples = arguments?.getSerializable("couples", HashMap::class.java)
-        Toast.makeText(requireContext(), "$couples", Toast.LENGTH_SHORT).show()
+        subscribeToViewModel()
+        setupButtons()
     }
 
     private fun setupViewModel() {
-//        (requireContext().applicationContext as MyApp).connectionScreenComponent.inject(this)
-        viewModel = ViewModelProvider(this)[CheckViewModel::class.java]
+        val activity = requireActivity() as OnFragmentGetDataListener
+        val couples = activity.onGetData()
+
+        val vmFactory = CheckViewModelFactory(couples)
+        viewModel = ViewModelProvider(this, vmFactory)[CheckViewModel::class.java]
+        viewModel.getNextCouple()
     }
 
+    private fun subscribeToViewModel() {
+        viewModel.state.observe(viewLifecycleOwner) {
+            when (it) {
+                is CheckCoupleState.NewCouple -> {
+                    binding.secondWordTextview.visibility = View.INVISIBLE
+                    binding.firstWordTextview.text = it.nextCouple.first
+                    binding.secondWordTextview.text = it.nextCouple.second
+                }
+                is CheckCoupleState.Finish -> Toast.makeText(requireContext(), "Финиш",
+                    Toast.LENGTH_SHORT).show()
+                is CheckCoupleState.Error -> Toast.makeText(requireContext(), "Ошибка",
+                    Toast.LENGTH_SHORT).show()
+
+            }
+        }
+    }
+
+    private fun setupButtons() {
+        binding.secondWordTextview.setOnClickListener { binding.secondWordTextview.visibility = View.VISIBLE }
+        binding.checkYourselfButton.setOnClickListener { binding.secondWordTextview.visibility = View.VISIBLE }
+        binding.nextCoupleButton.setOnClickListener {viewModel.getNextCouple()}
+    }
 
     companion object {
         fun newInstance() = CheckFragment()
